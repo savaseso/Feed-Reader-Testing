@@ -96,38 +96,32 @@ $(function() {
                     loadFeed(0,done);
                 })
                 it('completes work', ()=>{
-                    const feed = document.querySelector('.feed');
-                    expect(feed.children.length>0).toBe(true);
+                    const feed = document.querySelectorAll('.feed .entry');
+                    expect(feed.length>0).toBe(true);
                 })
-            })
+            })    
+            describe('New Feed Selection', ()=>{
+                let firstFeed;
+                let secondFeed;
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
-            describe('New Feed Selection',()=>{
-                const feed = document.querySelector('.feed');
-                const firstFeed = [];
                 beforeEach((done)=>{
-                    loadFeed(0);
-                    Array.from(feed.children).forEach((entry)=>{
-                        firstFeed.push(entry.innerText);
-                    });
-                    loadFeed(1,done);
-                });
-                it('content changes', ()=>{
-                    Array.from(feed.children).forEach((entry,index)=>{
-                        console.log(entry.innerText, firstFeed[index],entry.innerText===firstFeed[index]);
-                        expect(entry.innerText===firstFeed[index]).toBe(false);
-                        expect(entry.innerText, firstFeed[index],entry.innerText===firstFeed[index]);
-                    });
+                    loadFeed(0,()=>{
+                        firstFeed = $('.feed').html();
+                    
+                        loadFeed(1,()=>{
+                            secondFeed = $('.feed').html();
+                            done();
+                        })      
+                    })
                 })
-
-            
-
-            
-        /* TODO: Write a test that ensures when a new feed is loaded
+                /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-            
+                it('content changes',()=>{
+                    console.log(firstFeed);
+                    console.log(secondFeed);
+                    expect(firstFeed).not.toEqual(secondFeed);
+                })
             })
-
 }());
